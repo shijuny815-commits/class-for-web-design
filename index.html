@@ -5,17 +5,17 @@
         body{
             background-color:aquamarine;
         }
-        h1{
-            background-color: white;
-            color: #111111;
-            font-size: large;
-            margin: 0;
-            padding: 0;
-        }
+        div.head{
+            h1{
+                background-color: white;
+                color: #111111;
+                font-size: large;
+                margin: 0;
+                padding: 0;
+            }
         ul{
            background-color: #333333;
-            
-        }  
+            }  
         li a{
             display: block;
             color: white;
@@ -30,20 +30,25 @@
         li{
             float: left;
         }
+        }
     </style>
 </head>
 <body>
-    <h1>MRT HELPER</h1>
-    <ul style="list-style-type:none;">
-        <li><a>HOME</a></li>
-        <li><a>map</a></li>
-        <li><a>cheak from point(use google map)</a></li>
-        <li><a>some specail discoumt</a></li>
-    </ul>
-    <ul>
-        <li>FR</li>
-        <li>TR</li>
-        <li>SR</li>
-        <li>SSR</li>
-    </ul>
+    <div class="head">
+        <h1>MRT HELPER</h1>
+        <ul style="list-style-type:none;">
+            <li><a>HOME</a></li>
+            <li><a>map</a></li>
+            <li><a>cheak from point(use google map)</a></li>
+            <li><a>some specail discoumt</a></li>
+        </ul>
+    </div>
+    <div class="show1">
+        <ul>
+            <li>FR</li>
+                <li>TR</li>
+            <li>SR</li>
+            <li>SSR</li>
+        </ul>
+    </div>
 </body>
