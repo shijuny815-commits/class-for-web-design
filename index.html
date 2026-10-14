@@ -1,66 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.container {
+	border-radius: 50px;
+  position: relative;
+  width: 50%;
+}
 
-        h1 {
-            font-size: 50px;
-        }
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 
-        div.main {
-            display: flex;
-            flex-direction: column;
-            gap: 20px; /* Adds space between the up and down sections */
-        }
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height:100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #008CBA;
+}
 
-        /* Top Section: Word (Left) | Picture (Right) */
-        div.up {
-            display: flex;
-            flex-direction: row;        /* Side-by-side */
-            align-items: center;        /* Vertically centers text and image */
-            /*justify-content: space-between;  Spreads them out */
-            margin: 10px;
-            gap: 20px;                  /* Space between text and image */
-        }
+.container:hover .overlay {
+  opacity: 1;
+}
 
-        /* Bottom Section: Picture (Left) | Word (Right) */
-        div.down {
-            display: flex;
-            flex-direction: row-reverse; /* Reverses order: Picture on left, Word on right */
-            align-items: center;
-            /*justify-content: space-between;*/
-            margin: 10px;
-            gap: 20px;
-        }
-
-        /* Styling for all images inside up and down */
-        div.up img, div.down img {
-            border-radius: 5px;
-            width: 100px;
-            height: 80px;
-            object-fit: cover; /* Prevents the image from stretching */
-        }
-    </style>
+.text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+</style>
 </head>
 <body>
-    <h1>THE QUOKKA</h1>
-    
-    <div class="main">
-        <!-- Word | Picture -->
-        <div class="up">
-            <p>what he like ...... what he eat..... what he want .... how many hours he sleeps ....</p>
-            <img src="quokka.png" alt="Quokka">
-        </div>
-        
-        <!-- Picture | Word -->
-        <div class="down">
-            <p>what he stay ......</p>
-            <img src="quokka.png" alt="Quokka">
-        </div> 
-    </div>
+
+<h2>Fade in Overlay</h2>
+<p>Hover over the image to see the effect.</p>
+
+<div class="container">
+  <img src="img_avatar.png" alt="Avatar" class="image">
+  <div class="overlay">
+    <div class="text">Hello World</div>
+  </div>
+</div>
+
 </body>
 </html>
