@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TOKYO. - A Visual Journey Through Japan</title>
+    <title>UNITED KINGDOM. - A Journey Through History and Modernity</title>
     <style>
-        /* 基礎排版與互動效果樣式 */
+        /* 基礎排版與風格樣式 */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            color: #333;
+            color: #2b2b2b;
+            background-color: #fcfcfc;
         }
         header {
             display: flex;
@@ -17,12 +18,19 @@
             align-items: center;
             padding: 20px 40px;
             background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+        .logo {
+            font-weight: bold;
+            font-size: 20px;
+            letter-spacing: 2px;
         }
         nav a {
             margin-left: 20px;
             text-decoration: none;
             color: #333;
             font-weight: bold;
+            font-size: 14px;
         }
         .hero {
             height: 80vh;
@@ -32,19 +40,62 @@
             align-items: center;
             padding: 0 40px;
             color: #fff;
+            position: relative;
+        }
+        .hero-content {
+            max-width: 600px;
+        }
+        .hero-content .subtitle {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .hero-content h1 {
+            font-size: 56px;
+            margin: 10px 0;
         }
         .content-section {
-            padding: 60px 40px;
-            max-width: 1200px;
+            padding: 80px 40px;
+            max-width: 1100px;
             margin: 0 auto;
+        }
+        .section-number {
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: #8c8c8c;
+            display: block;
+            margin-bottom: 10px;
+        }
+        h2 {
+            font-size: 36px;
+            margin-top: 0;
+            margin-bottom: 40px;
         }
         .grid-container {
             display: flex;
-            gap: 40px;
+            gap: 50px;
             align-items: center;
         }
         .text-column, .image-column {
             flex: 1;
+        }
+        .category-title {
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: #8c8c8c;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 15px;
+        }
+        p {
+            line-height: 1.7;
+            color: #555;
+            font-size: 15px;
+        }
+        .quote {
+            font-style: italic;
+            color: #222;
+            margin-top: 20px;
         }
         img {
             width: 100%;
@@ -52,7 +103,7 @@
             border-radius: 4px;
         }
 
-        /* 03 Photo Journal 三張圖互動 Focus 樣式 */
+        /* 03 Photo Journal 三張圖 Focus / Overlay 懸停效果 */
         .three-columns-gallery {
             display: flex;
             gap: 20px;
@@ -67,49 +118,59 @@
         }
         .card img {
             width: 100%;
+            height: 380px;
+            object-fit: cover;
             display: block;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
         }
-        /* 遮罩文字層，預設隱藏 */
+        /* 遮罩文字層 */
         .card-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(15, 23, 42, 0.85); /* 深色復古高雅質感遮罩 */
             color: #fff;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 25px;
             box-sizing: border-box;
             opacity: 0;
             transition: opacity 0.3s ease;
             text-align: center;
         }
         .card-overlay span.section-tag {
-            font-size: 12px;
+            font-size: 11px;
             letter-spacing: 2px;
-            color: #d4a373;
-            margin-bottom: 8px;
+            color: #c5a059; /* 典雅英式金黃色 */
+            margin-bottom: 10px;
+            font-weight: bold;
         }
         .card-overlay h3 {
-            font-size: 20px;
-            margin: 0 0 10px 0;
+            font-size: 22px;
+            margin: 0 0 12px 0;
+            font-family: Georgia, serif;
         }
         .card-overlay p {
-            font-size: 14px;
-            line-height: 1.4;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #ddd;
             margin: 0;
         }
-        /* 滑鼠移上去時 (Focus) 顯示遮罩與文字 */
-        .card:hover .card-overlay {
+        /* Hover/Focus 觸發效果 */
+        .card:hover .card-overlay,
+        .card:focus-within .card-overlay {
             opacity: 1;
         }
         .card:hover img {
-            transform: scale(1.05);
+            transform: scale(1.06);
+        }
+        .instruction, .sub-instruction {
+            font-size: 13px;
+            color: #777;
         }
     </style>
 </head>
@@ -117,97 +178,97 @@
 
     <!-- 導覽列 -->
     <header>
-        <div class="logo">TOKYO.</div>
+        <div class="logo">UNITED KINGDOM.</div>
         <nav>
             <a href="#discover">DISCOVER</a>
-            <a href="#neighborhoods">NEIGHBORHOODS</a>
+            <a href="#heritage">HERITAGE</a>
             <a href="#gallery">GALLERY</a>
         </nav>
     </header>
 
     <!-- 主視覺 Banner 區塊 -->
-    <section class="hero" style="background-image: url('quokka.png');">
+    <section class="hero" style="background-image: url('p1.jpg');">
         <div class="hero-content">
-            <span class="subtitle">A VISUAL JOURNEY THROUGH JAPAN</span>
-            <h1>A City of Contrasts.</h1>
-            <p>Quiet temples, electric streets, and little moments in between. Discover a different side of Tokyo.</p>
+            <span class="subtitle">A VISUAL JOURNEY THROUGH THE UK</span>
+            <h1>A Realm of Heritage.</h1>
+            <p>Historic castles, cobblestone alleys, and vibrant cityscapes. Discover the timeless charm of Britain.</p>
         </div>
     </section>
 
     <!-- 區塊 01 / DISCOVER -->
     <section id="discover" class="content-section">
         <span class="section-number">01 / DISCOVER</span>
-        <h2>Where tradition meets tomorrow.</h2>
+        <h2>Where history echoes in every corner.</h2>
         
         <div class="grid-container">
             <div class="text-column">
-                <span class="category-title">MORE THAN A DESTINATION</span>
-                <p>Tokyo is a city that never stops surprising you. One moment, you are surrounded by bright signs and busy crossings. A few streets away, you might discover a quiet shrine hidden between modern buildings.[cite: 1]</p>
-                <p>What makes Tokyo special is the way old and new exist side by side. Every neighborhood has its own rhythm, atmosphere, and story to tell.[cite: 1]</p>
-                <p class="quote">"The best way to explore Tokyo is to get a little lost."[cite: 1]</p>
+                <span class="category-title">BEYOND THE CAPITAL</span>
+                <p>The United Kingdom is a tapestry woven from centuries of stories. From the iconic red double-decker buses crossing the River Thames to grand Gothic architecture standing proud under grey skies, every street holds a legend.</p>
+                <p>What makes Britain captivating is its effortless blend of historic majesty and contemporary culture. Royal palaces sit alongside cutting-edge art galleries and bustling markets.</p>
+                <p class="quote">"When a man is tired of London, he is tired of life."</p>
             </div>
             <div class="image-column">
-                <img src="quokka.png" alt="Tokyo street intersection with neon lights">
+                <img src="p2.jpg" alt="London street with classic red bus and Elizabeth Tower">
             </div>
         </div>
     </section>
 
-    <!-- 區塊 02 / NEIGHBORHOODS -->
-    <section id="neighborhoods" class="content-section">
-        <span class="section-number">02 / NEIGHBORHOODS</span>
-        <h2>Slow down. Look closer.</h2>
+    <!-- 區塊 02 / HERITAGE -->
+    <section id="heritage" class="content-section">
+        <span class="section-number">02 / HERITAGE</span>
+        <h2>Escape to the countryside.</h2>
         
         <div class="grid-container">
             <div class="image-column">
-                <img src="quokka.png" alt="Traditional Tokyo street with pagoda">
+                <img src="p3.jpg" alt="Charming Cotswolds stone cottages">
             </div>
             <div class="text-column">
-                <span class="category-title">THE QUIETER SIDE</span>
-                <p>Beyond the crowded stations and famous landmarks, Tokyo is full of peaceful corners. Small cafés, traditional shops, and narrow streets invite visitors to take their time.[cite: 2]</p>
-                <p>Spend an afternoon walking without a strict plan. Notice the details: wooden doors, warm lanterns, tiny gardens, and the everyday life happening all around you.[cite: 2]</p>
-                <p>Sometimes the most memorable places are the ones you never planned to visit.[cite: 2]</p>
+                <span class="category-title">THE TRADITIONAL COUNTRYSIDE</span>
+                <p>Step beyond the vibrant pulse of London to explore the peaceful villages of the Cotswolds and the rugged Highlands of Scotland. Honey-colored stone cottages, rolling green hills, and quiet streams offer a tranquil escape.</p>
+                <p>Take an afternoon tea at a local pub, wander around medieval ruins, and enjoy the slow pace of rural British life.</p>
+                <p>In these quiet hamlets, time seems to stand still, allowing you to appreciate the subtle beauty of nature.</p>
             </div>
         </div>
     </section>
 
-    <!-- 區塊 03 / PHOTO JOURNAL (每張圖皆具備 hover/focus 效果並對應 01, 02, 03 主題) -->
+    <!-- 區塊 03 / PHOTO JOURNAL (每張圖 Hover/Focus 會顯示對應 01、02、03 的標題與文字) -->
     <section id="gallery" class="content-section">
         <span class="section-number">03 / PHOTO JOURNAL</span>
-        <h2>Tokyo in three frames.</h2>
-        <p class="instruction">Move your mouse over each photograph to reveal the story behind the image[cite: 2]</p>
+        <h2>Britain in three frames.</h2>
+        <p class="instruction">Move your mouse over each photograph to reveal the story behind the image.</p>
 
         <div class="three-columns-gallery">
-            <!-- 對應 01 主題的卡片 -->
-            <div class="card">
-                <img src="quokka.png" alt="Frame 1: Tokyo city street rain reflection">
+            <!-- 對應 01 DISCOVER 主題 -->
+            <div class="card" tabindex="0">
+                <img src="p4.jpg" alt="Frame 1: Tower Bridge at dusk">
                 <div class="card-overlay">
                     <span class="section-tag">01 / DISCOVER</span>
-                    <h3>Neon Pulse</h3>
-                    <p>Capturing the vibrant energy of the city streets after the rain, where modern lights reflect on the wet pavement.</p>
+                    <h3>Thames Riverfront</h3>
+                    <p>The majestic Tower Bridge glowing at dusk, reflecting Britain's modern energy interwoven with its imperial history.</p>
                 </div>
             </div>
 
-            <!-- 對應 02 主題的卡片 -->
-            <div class="card">
-                <img src="quokka.png" alt="Frame 2: Tokyo sunset skyline">
+            <!-- 對應 02 HERITAGE 主題 -->
+            <div class="card" tabindex="0">
+                <img src="p5.jpg" alt="Frame 2: Scottish Highlands landscape">
                 <div class="card-overlay">
-                    <span class="section-tag">02 / NEIGHBORHOODS</span>
-                    <h3>Quiet Horizons</h3>
-                    <p>Stepping away from the crowds to witness a peaceful sunset skyline overlooking the distant hills of Tokyo.</p>
+                    <span class="section-tag">02 / HERITAGE</span>
+                    <h3>Highland Mist</h3>
+                    <p>A breath-taking view of the Scottish Highlands, where rugged mountain peaks meet ancient, mist-covered valleys.</p>
                 </div>
             </div>
 
-            <!-- 對應 03 主題的卡片 -->
-            <div class="card">
-                <img src="p6.jpg" alt="Frame 3: Tokyo night alley with red lantern">
+            <!-- 對應 03 PHOTO JOURNAL 主題 -->
+            <div class="card" tabindex="0">
+                <img src="p6.jpg" alt="Frame 3: Cozy London street pub">
                 <div class="card-overlay">
                     <span class="section-tag">03 / PHOTO JOURNAL</span>
-                    <h3>Hidden Alleys</h3>
-                    <p>A quiet night walk down a narrow traditional alleyway illuminated by the warm glow of classic red lanterns.</p>
+                    <h3>Evening Warmth</h3>
+                    <p>A classic London pub illuminating a quiet cobblestone alley, inviting passersby in for good food and friendly conversation.</p>
                 </div>
             </div>
         </div>
-        <p class="sub-instruction" style="margin-top: 20px;">Hover over a photo to see the fade-in overlay effect[cite: 2]</p>
+        <p class="sub-instruction" style="margin-top: 20px;">Hover or focus over a photo to see the fade-in overlay effect.</p>
     </section>
 
 </body>
