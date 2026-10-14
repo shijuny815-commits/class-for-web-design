@@ -1,47 +1,66 @@
 <!DOCTYPE html>
+<html>
 <head>
     <style>
-        div.main{
-            flex-direction:column;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
         }
-        h1{
+
+        h1 {
             font-size: 50px;
         }
-        div.up{
+
+        div.main {
+            display: flex;
             flex-direction: column;
-            margin: 10px;
-            img
-            {
-                border-radius: 5px;
-                width: 100px;
-                height: 80px;
-            }
+            gap: 20px; /* Adds space between the up and down sections */
         }
-        div.down{
-            flex-direction: row;
-            float: left;
+
+        /* Top Section: Word (Left) | Picture (Right) */
+        div.up {
+            display: flex;
+            flex-direction: row;        /* Side-by-side */
+            align-items: center;        /* Vertically centers text and image */
+            justify-content: space-between; /* Spreads them out */
             margin: 10px;
-            img
-            {
-                border-radius: 5px;
-                width: 100px;
-                height: 80px;
-            }
+            gap: 20px;                  /* Space between text and image */
+        }
+
+        /* Bottom Section: Picture (Left) | Word (Right) */
+        div.down {
+            display: flex;
+            flex-direction: row-reverse; /* Reverses order: Picture on left, Word on right */
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px;
+            gap: 20px;
+        }
+
+        /* Styling for all images inside up and down */
+        div.up img, div.down img {
+            border-radius: 5px;
+            width: 100px;
+            height: 80px;
+            object-fit: cover; /* Prevents the image from stretching */
         }
     </style>
 </head>
 <body>
-    <h1>
-        THE QUOKKA
-    </h1>
+    <h1>THE QUOKKA</h1>
+    
     <div class="main">
+        <!-- Word | Picture -->
         <div class="up">
-        <p> what he like ...... what he eat..... what he want .... hoe many hour he sleep ....</p>
-        <img src="quokka.png">
-    </div>
-    <div class="down">
-        <img src="quokka.png"> 
-        <p> what he stay ......</p>
-    </div> 
+            <p>what he like ...... what he eat..... what he want .... how many hours he sleeps ....</p>
+            <img src="quokka.png" alt="Quokka">
+        </div>
+        
+        <!-- Picture | Word -->
+        <div class="down">
+            <p>what he stay ......</p>
+            <img src="quokka.png" alt="Quokka">
+        </div> 
     </div>
 </body>
+</html>
