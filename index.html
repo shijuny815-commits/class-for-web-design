@@ -33,18 +33,17 @@
             font-size: 14px;
         }
         .hero {
-            height: 80vh;
-            /* 由左至右：深黑 (80%不透明) -> 半透明黑 -> 完全透明 (無) */
-            background: 
-                linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 40%, rgba(0, 0, 0, 0) 100%),
-                url('p1.jpg') center/cover no-repeat;
-            display: flex;
-            align-items: center;
-            padding: 0 40px;
-            color: #fff;
-            position: relative;
-        }
-
+    height: 80vh;
+    /* 修正處：將漸層與背景圖寫在同一行，並加上 center/cover no-repeat 避免圖片重複 */
+    background: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 40%, rgba(0, 0, 0, 0) 100%),
+        url('p1.jpg') center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    color: #fff;
+    position: relative;
+}
         .hero-content {
             max-width: 600px;
             z-index: 1; /* 確保文字層級在漸層之上 */
