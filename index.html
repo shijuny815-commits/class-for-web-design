@@ -1,35 +1,125 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>THE QUOKKA - 雜誌風排版</title>
     <style>
-      div.top
-      {
-        height: 80px;
-        width: auto;
-        background-color: #FFC349;
-        flex:auto;
-        display: flex;
-        ul
-        {
-        display:flex;
-		}
-        li
-        {
-        	display: block;
-            padding: 30px;
+        body {
+            font-family: "Georgia", "Microsoft JhengHei", serif;
+            margin: 0;
+            background-color: #fdfdfd;
+            color: #111;
         }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="top">
-      <h2>england</h2>
-      <ul>
-        <li>past</li>
-        <li>monden</li>
-        <li>future</li>
-      </ul>
-    </div>
-  </body>
-</html>
 
+        /* 頂部主標題區塊 */
+        .hero {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 50px;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+        .hero p {
+            font-size: 18px;
+            color: #aaa;
+            margin-top: 10px;
+        }
+
+        /* 內容容器 */
+        .container {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        /* 每一個資訊區塊 */
+        .section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            margin-bottom: 80px;
+        }
+
+        /* 反向排列（圖片在左、文字在右） */
+        .section.reverse {
+            flex-direction: row-reverse;
+        }
+
+        /* 文字內容 */
+        .text-content {
+            flex: 1;
+        }
+        .section-tag {
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: #888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .text-content h2 {
+            font-size: 32px;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .text-content p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* 圖片樣式 */
+        .image-content {
+            flex: 1;
+        }
+        .image-content img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 頂部標題 -->
+    <div class="hero">
+        <h1>THE QUOKKA</h1>
+        <p>A visual journey into the world of the happiest animal on Earth.</p>
+    </div>
+
+    <div class="container">
+
+        <!-- 區塊一：文字左 | 圖片右 -->
+        <div class="section">
+            <div class="text-content">
+                <div class="section-tag">01 / LIFESTYLE</div>
+                <h2>What he likes & what he eats.</h2>
+                <p>What he like ...... what he eat..... what he want .... how many hours he sleeps .... Exploring the daily habits of the cheerful quokka in the wild.</p>
+            </div>
+            <div class="image-content">
+                <img src="quokka.png" alt="Quokka">
+            </div>
+        </div>
+
+        <!-- 區塊二：圖片左 | 文字右 (加上 reverse 類別) -->
+        <div class="section reverse">
+            <div class="text-content">
+                <div class="section-tag">02 / HABITAT</div>
+                <h2>Where he stays.</h2>
+                <p>What he stay ...... Discovering their primary native shelters, cozy shaded spots, and the unique coastal environments they call home.</p>
+            </div>
+            <div class="image-content">
+                <img src="quokka.png" alt="Quokka">
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
