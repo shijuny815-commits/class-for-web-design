@@ -25,6 +25,7 @@ body {
             text-decoration: none;
             color: black;
             font-weight: bold;
+            position: relative;
             padding-bottom: 8px;
             transition: color 0.3s ease;
             font-size: 14px;
