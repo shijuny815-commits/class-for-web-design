@@ -1,32 +1,140 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <style>      
-            table{
-                border:1px solid block;
-                
+        <style>
+            body {
+                padding: 20px;
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background-color: #f4f7f6;
+            }
+
+            .schedule-table {
+                width: 600px;
+                border-collapse: collapse;
+                background-color: white;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            /* Header Styling */
+            .schedule-table thead th {
+                background-color: #555555;
+                color: white;
+                font-size: 18px;
+                padding: 12px;
+                text-align: center;
+                text-transform: uppercase;
+            }
+
+            /* Cell Styling */
+            .schedule-table th, .schedule-table td {
+                border: 1px solid #e0e0e0;
+                padding: 10px;
+                text-align: center;
+                vertical-align: middle;
+                font-size: 14px;
+            }
+
+            /* Alternating Row Colors (White & Light Gray) */
+            .schedule-table tbody tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+
+            .schedule-table tbody tr:nth-child(odd) {
+                background-color: #ffffff;
+            }
+
+            /* Time Column Styling */
+            .time-col {
+                font-weight: bold;
+                color: #555;
+                background-color: #f1f1f1 !important;
+                width: 90px;
+            }
+
+            /* Subject / Class Block Colors */
+            .bu {
+                background-color: #d1e7dd !important; /* Soft Green for Business */
+                color: #0f5132;
+                font-weight: bold;
+            }
+
+            .ph {
+                background-color: #cfe2ff !important; /* Soft Blue for Physics */
+                color: #084298;
+                font-weight: bold;
+            }
+
+            .ap {
+                background-color: #fff3cd !important; /* Soft Yellow for Applied Math */
+                color: #664d03;
+                font-weight: bold;
+            }
+
+            .breakfast {
+                color: #6c757d;
+                font-style: italic;
             }
         </style>
     </head>
     <body>
-        <table width=500px>
-            <tr>
-                <td></td>
-                <td><p>monday</p></td>
-                <td><p>twuesday</p></td>
-                <td><p>wensday</p></td>
-            </tr>
-            <tr>
-                <td><p>1 pm</p></td>
-                <td><p>math</p></td>
-                <td><p>math</p></td>
-                <td><p>math</p></td>
-            </tr>
-            <tr>
-                <td><p>2 pm</p></td>
-                <td><p>math</p></td>
-                <td><p>math</p></td>
-                <td><p>math</p></td>
-            </tr>
+
+        <table class="schedule-table">
+            <thead>
+                <tr>
+                    <th>TIME</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="time-col">7:30am</td>
+                    <td class="breakfast">breakfast</td>
+                    <td class="breakfast">breakfast</td>
+                    <td class="breakfast">breakfast</td>
+                </tr>
+                <tr>
+                    <td class="time-col">8:00am</td>
+                    <td rowspan="2" class="bu">Business: Lecture<br><small>Bldg B Rm 256</small></td>
+                    <td rowspan="3" class="ph">Physics: Lab<br><small>Bldg J Rm 309</small></td>
+                    <td rowspan="2" class="bu">Business: Lecture<br><small>Bldg B Rm 256</small></td>
+                </tr>
+                <tr>
+                    <td class="time-col">8:30am</td>
+                </tr>
+                <tr>
+                    <td class="time-col">9:30am</td>
+                    <td rowspan="2" class="ap">Applied Math<br><small>Bldg H Rm 100</small></td>
+                    <td rowspan="2" class="ap">Applied Math<br><small>Bldg H Rm 100</small></td>
+                </tr>
+                <tr>
+                    <td class="time-col">10:00am</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="time-col">10:30am</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="time-col">11:00am</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="time-col">11:30am</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
         </table>
+
     </body>
 </html>
