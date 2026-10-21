@@ -20,16 +20,11 @@
             background: #fff;
             border-bottom: 1px solid #ffffff;
             color: black;
-            a:hover
-            {
-                color: #c5a059;
-            }
         }
         .logo {
             font-weight: bold;
             font-size: 20px;
             letter-spacing: 2px;
-            
         }
 
         nav a {
@@ -39,32 +34,34 @@
             font-weight: bold;
             font-size: 14px;
         }
-        nav a:hover{
+        
+        /* 導覽列按鈕 hover 時的底線與顏色效果 */
+        nav a:hover {
             color: #c5a059;
             border-bottom: 2px solid #c5a059;
-            padding: 5px;
+            padding-bottom: 5px;
         }
-.hero {
-    height: 80vh;
-    background-image:
-        linear-gradient(
-            to right,
-            rgba(0, 0, 0, 0.90) 0%,
-            rgba(0, 0, 0, 0.65) 35%,
-            rgba(0, 0, 0, 0.25) 65%,
-            rgba(0, 0, 0, 0) 100%
-        ),
-        url('p1.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
 
-    display: flex;
-    align-items: center;
-    padding: 0 40px;
-    color: #fff;
-    position: relative;
-}
+        .hero {
+            height: 80vh;
+            background-image:
+                linear-gradient(
+                    to right,
+                    rgba(0, 0, 0, 0.90) 0%,
+                    rgba(0, 0, 0, 0.65) 35%,
+                    rgba(0, 0, 0, 0.25) 65%,
+                    rgba(0, 0, 0, 0) 100%
+                ),
+                url('p1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            color: #fff;
+            position: relative;
+        }
         .hero-content {
             max-width: 600px;
             z-index: 1; 
@@ -86,7 +83,7 @@
         .section-number {
             font-size: 12px;
             letter-spacing: 2px;
-            color: #ffffff;
+            color: #8c8c8c;
             display: block;
             margin-bottom: 10px;
         }
@@ -94,6 +91,7 @@
             font-size: 36px;
             margin-top: 0;
             margin-bottom: 40px;
+            font-family: Georgia, serif;
         }
         .grid-container {
             display: flex;
@@ -147,14 +145,13 @@
             display: block;
             transition: transform 0.4s ease;
         }
-        /* 遮罩文字層 */
         .card-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 42, 0.85); /* 深色復古高雅質感遮罩 */
+            background: rgba(15, 23, 42, 0.85);
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -169,7 +166,7 @@
         .card-overlay span.section-tag {
             font-size: 11px;
             letter-spacing: 2px;
-            color: #c5a059; /* 典雅英式金黃色 */
+            color: #c5a059;
             margin-bottom: 10px;
             font-weight: bold;
         }
@@ -184,7 +181,6 @@
             color: #ddd;
             margin: 0;
         }
-        /* Hover/Focus 觸發效果 */
         .card:hover .card-overlay,
         .card:focus-within .card-overlay {
             opacity: 1;
@@ -195,6 +191,55 @@
         .instruction, .sub-instruction {
             font-size: 13px;
             color: #777;
+        }
+
+        /* 表格專屬樣式 */
+        .table-container {
+            margin-top: 40px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fdfbf7;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+        thead th {
+            background-color: #1e2a25;
+            color: #ffffff;
+            font-weight: normal;
+            letter-spacing: 0.5px;
+        }
+        .itinerary-table td:first-child {
+            font-weight: bold;
+            width: 15%;
+        }
+        .itinerary-table td {
+            width: 28.3%;
+        }
+        .full-span {
+            text-align: center !important;
+            color: #a34c38;
+            font-weight: bold;
+            background-color: #f7ebe1;
+        }
+        .budget-table td:first-child {
+            font-weight: bold;
+            width: 30%;
+        }
+        .budget-table td:nth-child(2) {
+            width: 45%;
+        }
+        .budget-table td:last-child {
+            text-align: right;
+            width: 25%;
         }
     </style>
 </head>
@@ -207,12 +252,12 @@
             <a href="#discover">DISCOVER</a>
             <a href="#heritage">HERITAGE</a>
             <a href="#gallery">GALLERY</a>
-            <a href="#planer">PLANER</a>
-            </nav>
+            <a href="#planer">PLANNER</a>
+        </nav>
     </header>
 
     <!-- 主視覺 Banner 區塊 -->
-    <section class="hero" >
+    <section class="hero">
         <div class="hero-content">
             <span class="subtitle">A VISUAL JOURNEY THROUGH THE UK</span>
             <h1>A Realm of Heritage.</h1>
@@ -256,20 +301,88 @@
         </div>
     </section>
 
+    <!-- 規劃與表格區塊 (PLANNER) -->
     <section id="planer" class="content-section">
-        <h1>Three daays in Tokyo</h1>
+        <span class="section-number">04 / PLANNER</span>
+        <h2>Trip Itinerary & Budget</h2>
+        <p>A sample itinerary and budget outline for your journey.</p>
 
+        <!-- 行程表表格 -->
+        <div class="table-container">
+            <table class="itinerary-table">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Morning</th>
+                        <th>Afternoon</th>
+                        <th>Evening</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Day 1</td>
+                        <td>British Museum</td>
+                        <td>Covent Garden</td>
+                        <td>Soho</td>
+                    </tr>
+                    <tr>
+                        <td>Day 2</td>
+                        <td>Windsor Castle</td>
+                        <td>Bath Roman Baths</td>
+                        <td>Oxford</td>
+                    </tr>
+                    <tr>
+                        <td>Day 3</td>
+                        <td colspan="3" class="full-span">Scottish Highlands Day Tour</td>
+                        <td>Edinburgh</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 旅遊預算表表格 -->
+        <div class="table-container" style="margin-top: 60px;">
+            <h2>Travel Budget</h2>
+            <p style="font-size: 14px; color: #666; margin-bottom: 20px;">A sample budget for transportation and meals in the UK.</p>
+            <table class="budget-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Item</th>
+                        <th style="text-align: right;">Estimated Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="2">Transportation</td>
+                        <td>Oyster Card / Tube</td>
+                        <td>£30</td>
+                    </tr>
+                    <tr>
+                        <td>Train to Cotswolds</td>
+                        <td>£45</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">Food</td>
+                        <td>Traditional Pub Lunch</td>
+                        <td>£20</td>
+                    </tr>
+                    <tr>
+                        <td>Fine Dining Dinner</td>
+                        <td>£60</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </section>
-
     
-    <!-- 區塊 03 / PHOTO JOURNAL (每張圖 Hover/Focus 會顯示對應 01、02、03 的標題與文字) -->
+    <!-- 區塊 03 / PHOTO JOURNAL -->
     <section id="gallery" class="content-section">
         <span class="section-number">03 / PHOTO JOURNAL</span>
         <h2>Britain in three frames.</h2>
         <p class="instruction">Move your mouse over each photograph to reveal the story behind the image.</p>
 
         <div class="three-columns-gallery">
-            <!-- 對應 01 DISCOVER 主題 -->
             <div class="card" tabindex="0">
                 <img src="p4.jpg" alt="Frame 1: Tower Bridge at dusk">
                 <div class="card-overlay">
@@ -279,7 +392,6 @@
                 </div>
             </div>
 
-            <!-- 對應 02 HERITAGE 主題 -->
             <div class="card" tabindex="0">
                 <img src="p5.jpg" alt="Frame 2: Scottish Highlands landscape">
                 <div class="card-overlay">
@@ -289,7 +401,6 @@
                 </div>
             </div>
 
-            <!-- 對應 03 PHOTO JOURNAL 主題 -->
             <div class="card" tabindex="0">
                 <img src="p6.jpg" alt="Frame 3: Cozy London street pub">
                 <div class="card-overlay">
