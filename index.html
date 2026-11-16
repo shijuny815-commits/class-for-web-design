@@ -1,179 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>UNITED KINGDOM. - A Journey Through History and Modernity</title>
-    <link rel="stylesheet" href="sytle.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arc Study — Canvas Geometry</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #e6e3d6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 24px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    canvas {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+    }
+  </style>
 </head>
 <body>
+  <canvas id="arcStudyCanvas" width="800" height="980"></canvas>
 
-    <!-- 導覽列 -->
-    <header>
-        <div class="logo">UNITED KINGDOM.</div>
-        <nav>
-            <a href="#discover">DISCOVER</a>
-            <a href="#heritage">HERITAGE</a>
-            <a href="#gallery">GALLERY</a>
-            <a href="#planer">PLANNER</a>
-        </nav>
-    </header>
+  <script>
+    const canvas = document.getElementById("arcStudyCanvas");
+    const ctx = canvas.getContext("2d");
 
-    <!-- 主視覺 Banner 區塊 -->
-    <section class="hero">
-        <div class="hero-content">
-            <span class="subtitle">A VISUAL JOURNEY THROUGH THE UK</span>
-            <h1>A Realm of Heritage.</h1>
-            <p>Historic castles, cobblestone alleys, and vibrant cityscapes. Discover the timeless charm of Britain.</p>
-        </div>
-    </section>
+    // Color Palette
+    const COLORS = {
+      bg: "#F4F2E6",
+      teal: "#24443F",
+      peach: "#E7BD99",
+      rust: "#B14E3B",
+      cream: "#F3D79E",
+      coral: "#DD8A6D",
+      terracotta: "#D8836B",
+      offWhite: "#F4EFE0",
+      darkBrown: "#76382B",
+      sand: "#E4D5B3",
+      labelDark: "#4B3B2E",
+      labelLight: "#E8E3D5"
+    };
 
-    <!-- 區塊 01 / DISCOVER -->
-    <section id="discover" class="content-section">
-        <span class="section-number">01 / DISCOVER</span>
-        <h2>Where history echoes in every corner.</h2>
-        
-        <div class="grid-container">
-            <div class="text-column">
-                <span class="category-title">BEYOND THE CAPITAL</span>
-                <p>The United Kingdom is a tapestry woven from centuries of stories. From the iconic red double-decker buses crossing the River Thames to grand Gothic architecture standing proud under grey skies, every street holds a legend.</p>
-                <p>What makes Britain captivating is its effortless blend of historic majesty and contemporary culture. Royal palaces sit alongside cutting-edge art galleries and bustling markets.</p>
-                <p class="quote">"When a man is tired of London, he is tired of life."</p>
-            </div>
-            <div class="image-column">
-                <img src="p2.jpg" alt="London street with classic red bus and Elizabeth Tower">
-            </div>
-        </div>
-    </section>
+    // Helper: Draw tile background and bottom-left caption at (x, y)
+    function drawTileBase(x, y, size, bgColor, labelText, labelColor) {
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(x, y, size, size);
 
-    <!-- 區塊 02 / HERITAGE -->
-    <section id="heritage" class="content-section">
-        <span class="section-number">02 / HERITAGE</span>
-        <h2>Escape to the countryside.</h2>
-        
-        <div class="grid-container">
-            <div class="image-column">
-                <img src="p3.jpg" alt="Charming Cotswolds stone cottages">
-            </div>
-            <div class="text-column">
-                <span class="category-title">THE TRADITIONAL COUNTRYSIDE</span>
-                <p>Step beyond the vibrant pulse of London to explore the peaceful villages of the Cotswolds and the rugged Highlands of Scotland. Honey-colored stone cottages, rolling green hills, and quiet streams offer a tranquil escape.</p>
-                <p>Take an afternoon tea at a local pub, wander around medieval ruins, and enjoy the slow pace of rural British life.</p>
-                <p>In these quiet hamlets, time seems to stand still, allowing you to appreciate the subtle beauty of nature.</p>
-            </div>
-        </div>
-    </section>
+      ctx.fillStyle = labelColor;
+      ctx.font = "700 13px 'Helvetica Neue', Helvetica, Arial, sans-serif";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillText(labelText, x + 22, y + size - 22);
+    }
 
-    <!-- 規劃與表格區塊 (PLANNER) -->
-    <section id="planer" class="content-section">
-        <span class="section-number">04 / PLANNER</span>
-        <h2>Trip Itinerary & Budget</h2>
-        <p>A sample itinerary and budget outline for your journey.</p>
+    // 01 / HALF CIRCLE / 180° — anchored at top-left (x, y)
+    function drawHalfCircleTile(x, y, size) {
+      drawTileBase(x, y, size, COLORS.peach, "01 / HALF CIRCLE / 180°", COLORS.labelDark);
 
-        <!-- 行程表表格 -->
-        <div class="table-container">
-            <table class="itinerary-table">
-                <thead>
-                    <tr>
-                        <th>Day</th>
-                        <th>Morning</th>
-                        <th>Afternoon</th>
-                        <th>Evening</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Day 1</td>
-                        <td>British Museum</td>
-                        <td>Covent Garden</td>
-                        <td>Soho</td>
-                    </tr>
-                    <tr>
-                        <td>Day 2</td>
-                        <td>Windsor Castle</td>
-                        <td>Bath Roman Baths</td>
-                        <td>Oxford</td>
-                    </tr>
-                    <tr>
-                        <td>Day 3</td>
-                        <td colspan="3" class="full-span">Scottish Highlands Day Tour</td>
-                        <td>Edinburgh</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      const cx = x + size / 2;
+      const cy = y + size * 0.61;
+      const radius = size * 0.34;
 
-        <!-- 旅遊預算表表格 -->
-        <div class="table-container" style="margin-top: 60px;">
-            <h2>Travel Budget</h2>
-            <p style="font-size: 14px; color: #666; margin-bottom: 20px;">A sample budget for transportation and meals in the UK.</p>
-            <table class="budget-table">
-                <thead>
-                    <tr>
-                        <th>Category</th>
-                        <th>Item</th>
-                        <th style="text-align: right;">Estimated Cost</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td rowspan="2">Transportation</td>
-                        <td>Oyster Card / Tube</td>
-                        <td>£30</td>
-                    </tr>
-                    <tr>
-                        <td>Train to Cotswolds</td>
-                        <td>£45</td>
-                    </tr>
-                    <tr>
-                        <td rowspan="2">Food</td>
-                        <td>Traditional Pub Lunch</td>
-                        <td>£20</td>
-                    </tr>
-                    <tr>
-                        <td>Fine Dining Dinner</td>
-                        <td>£60</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-    
-    <!-- 區塊 03 / PHOTO JOURNAL -->
-    <section id="gallery" class="content-section">
-        <span class="section-number">03 / PHOTO JOURNAL</span>
-        <h2>Britain in three frames.</h2>
-        <p class="instruction">Move your mouse over each photograph to reveal the story behind the image.</p>
+      // Top 180° semicircle
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, Math.PI, 2 * Math.PI);
+      ctx.closePath();
+      ctx.fillStyle = COLORS.rust;
+      ctx.fill();
 
-        <div class="three-columns-gallery">
-            <div class="card" tabindex="0">
-                <img src="p4.jpg" alt="Frame 1: Tower Bridge at dusk">
-                <div class="card-overlay">
-                    <span class="section-tag">01 / DISCOVER</span>
-                    <h3>Thames Riverfront</h3>
-                    <p>The majestic Tower Bridge glowing at dusk, reflecting Britain's modern energy interwoven with its imperial history.</p>
-                </div>
-            </div>
+      // Horizontal baseline underneath
+      ctx.beginPath();
+      ctx.moveTo(cx - radius, cy + 16);
+      ctx.lineTo(cx + radius, cy + 16);
+      ctx.strokeStyle = COLORS.rust;
+      ctx.lineWidth = 3;
+      ctx.stroke();
+    }
 
-            <div class="card" tabindex="0">
-                <img src="p5.jpg" alt="Frame 2: Scottish Highlands landscape">
-                <div class="card-overlay">
-                    <span class="section-tag">02 / HERITAGE</span>
-                    <h3>Highland Mist</h3>
-                    <p>A breath-taking view of the Scottish Highlands, where rugged mountain peaks meet ancient, mist-covered valleys.</p>
-                </div>
-            </div>
+    // 02 / QUARTER SECTORS / 90° — anchored at top-left (x, y)
+    function drawQuarterSectorsTile(x, y, size) {
+      drawTileBase(x, y, size, COLORS.teal, "02 / QUARTER SECTORS / 90°", COLORS.labelLight);
 
-            <div class="card" tabindex="0">
-                <img src="p6.jpg" alt="Frame 3: Cozy London street pub">
-                <div class="card-overlay">
-                    <span class="section-tag">03 / PHOTO JOURNAL</span>
-                    <h3>Evening Warmth</h3>
-                    <p>A classic London pub illuminating a quiet cobblestone alley, inviting passersby in for good food and friendly conversation.</p>
-                </div>
-            </div>
-        </div>
-        <p class="sub-instruction" style="margin-top: 20px;">Hover or focus over a photo to see the fade-in overlay effect.</p>
-    </section>
-    
+      // Large top-left 90° sector
+      const largeOriginX = x + size * 0.215;
+      const largeOriginY = y + size * 0.215;
+      const largeRadius = size * 0.54;
+
+      ctx.beginPath();
+      ctx.moveTo(largeOriginX, largeOriginY);
+      ctx.arc(largeOriginX, largeOriginY, largeRadius, 0, Math.PI / 2);
+      ctx.closePath();
+      ctx.fillStyle = COLORS.cream;
+      ctx.fill();
+
+      // Small bottom-right 90° sector
+      const smallOriginX = x + size * 0.785;
+      const smallOriginY = y + size * 0.805;
+      const smallRadius = size * 0.205;
+
+      ctx.beginPath();
+      ctx.moveTo(smallOriginX, smallOriginY);
+      ctx.arc(smallOriginX, smallOriginY, smallRadius, Math.PI, 1.5 * Math.PI);
+      ctx.closePath();
+      ctx.fillStyle = COLORS.coral;
+      ctx.fill();
+    }
+
+    // 03 / THREE QUARTERS / 270° — anchored at top-left (x, y)
+    function drawThreeQuartersTile(x, y, size) {
+      drawTileBase(x, y, size, COLORS.terracotta, "03 / THREE QUARTERS / 270°", COLORS.labelDark);
+
+      const cx = x + size * 0.5;
+      const cy = y + size * 0.44;
+      const mainRadius = size * 0.315;
+
+      // 270° three-quarter sector (from 0° clockwise to 270°)
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, mainRadius, 0, 1.5 * Math.PI);
+      ctx.closePath();
+      ctx.fillStyle = COLORS.offWhite;
+      ctx.fill();
+
+      // Offset 90° dark brown sector in the top-right cutout
+      const offset = size * 0.042;
+      const smallRadius = size * 0.235;
+
+      ctx.beginPath();
+      ctx.moveTo(cx + offset, cy - offset);
+      ctx.arc(cx + offset, cy - offset, smallRadius, 1.5 * Math.PI, 2 * Math.PI);
+      ctx.closePath();
+      ctx.fillStyle = COLORS.darkBrown;
+      ctx.fill();
+    }
+
+    // 04 / OPEN ARCS / 120° — anchored at top-left (x, y)
+    function drawOpenArcsTile(x, y, size) {
+      drawTileBase(x, y, size, COLORS.sand, "04 / OPEN ARCS / 120°", COLORS.teal);
+
+      const cx = x + size / 2;
+      const cy = y + size * 0.65;
+
+      // 120° span centered at -90° (top): from -150° to -30°
+      const startAngle = (-150 * Math.PI) / 180;
+      const endAngle = (-30 * Math.PI) / 180;
+
+      // Outer thick teal arc
+      ctx.beginPath();
+      ctx.arc(cx, cy, size * 0.31, startAngle, endAngle);
+      ctx.strokeStyle = COLORS.teal;
+      ctx.lineWidth = size * 0.068;
+      ctx.lineCap = "butt";
+      ctx.stroke();
+
+      // Inner terracotta arc
+      ctx.beginPath();
+      ctx.arc(cx, cy, size * 0.185, startAngle, endAngle);
+      ctx.strokeStyle = COLORS.rust;
+      ctx.lineWidth = size * 0.044;
+      ctx.lineCap = "butt";
+      ctx.stroke();
+    }
+
+    // Master Poster Render Function
+    function renderPoster() {
+      // Poster background
+      ctx.fillStyle = COLORS.bg;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const marginX = 40;
+      const gridTopY = 185;
+      const tileSize = 360;
+
+      // Header Typography
+      ctx.fillStyle = COLORS.teal;
+      ctx.textAlign = "left";
+
+      ctx.font = "700 13px 'Helvetica Neue', Helvetica, Arial, sans-serif";
+      ctx.fillText("FORM / COLOUR / ANGLE", marginX, 42);
+
+      ctx.font = "800 58px 'Helvetica Neue', Helvetica, Arial, sans-serif";
+      ctx.fillText("ARC STUDY", marginX - 2, 112);
+
+      ctx.font = "400 19px 'Helvetica Neue', Helvetica, Arial, sans-serif";
+      ctx.fillText("One circle. Many possibilities.", marginX, 148);
+
+      // Draw the 4 tiles using exact (x, y) top-left coordinates
+      drawHalfCircleTile(marginX+ tileSize, gridTopY, tileSize);                       // Top-Left (40, 185)
+      drawQuarterSectorsTile(marginX , gridTopY, tileSize);        // Top-Right (400, 185)
+      drawThreeQuartersTile(marginX, gridTopY + tileSize, tileSize);         // Bottom-Left (40, 545)
+      drawOpenArcsTile(marginX + tileSize, gridTopY + tileSize, tileSize);   // Bottom-Right (400, 545)
+
+      // Footer Typography
+      const footerTopY = gridTopY + tileSize * 2 + 58;
+      ctx.fillStyle = COLORS.teal;
+      ctx.font = "800 16px 'Helvetica Neue', Helvetica, Arial, sans-serif";
+      ctx.fillText("CIRCULAR THINKING", marginX, footerTopY);
+
+      ctx.font = "400 15px 'Helvetica Neue', Helvetica, Arial, sans-serif";
+      ctx.fillText("Canvas geometry / beginPath · arc · fill · stroke", marginX, footerTopY + 30);
+    }
+
+    renderPoster();
+  </script>
 </body>
 </html>
