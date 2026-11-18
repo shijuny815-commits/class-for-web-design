@@ -50,11 +50,6 @@
         ctx.stroke();
         ctx.translate(0, radius * 0.85);
         ctx.rotate(-ang);
-        ctx.font = "50px Arial";
-        if(num%15==0)
-        {
-          ctx.strokeText("IIV",10,80);
-        }
       }
     }
     function drawlinebetween(n)
@@ -64,6 +59,23 @@
       ctx.lineWidth = radius * 0.005;
       ctx.strokeStyle = '#9A7B5E';
       ctx.stroke();
+    }
+    function drawword()
+    {
+      let romans=["IIV","VI","IX","XII"];
+      for (let i = 0; i < 4; i++) {
+        let ang = i * Math.PI*3 / 6;
+        
+        ctx.rotate(ang);
+        ctx.translate(0, -radius * 0.68); 
+        ctx.rotate(-ang); 
+        
+        ctx.fillText(romans[i], 0, 0);
+        
+        ctx.rotate(ang);
+        ctx.translate(0, radius * 0.68);
+        ctx.rotate(-ang);
+      }
     }
   </script>
 </body>
