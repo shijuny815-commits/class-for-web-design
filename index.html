@@ -30,6 +30,11 @@
   </style>
 </head>
 <body>
+  <button onclick="drawHalfCircleTile(40, 185, 360)">first</button>
+  <button onclick="drawQuarterSectorsTile(40, 185, 360)">2</button>
+  <button onclick="drawThreeQuartersTile(40, 185, 360)">3</button>
+  <button onclick="drawOpenArcsTile(40, 185, 360)">4</button>
+  
   <canvas id="arcStudyCanvas" width="800" height="980"></canvas>
 
   <script>
@@ -186,18 +191,8 @@
       // Header Typography
       ctx.fillStyle = COLORS.teal;
       ctx.textAlign = "left";
-
-      ctx.font = "700 13px 'Helvetica Neue', Helvetica, Arial, sans-serif";
-      ctx.fillText("FORM / COLOUR / ANGLE", marginX, 42);
-
-      ctx.font = "800 58px 'Helvetica Neue', Helvetica, Arial, sans-serif";
-      ctx.fillText("ARC STUDY", marginX - 2, 112);
-
-      ctx.font = "400 19px 'Helvetica Neue', Helvetica, Arial, sans-serif";
-      ctx.fillText("One circle. Many possibilities.", marginX, 148);
-
       // Draw the 4 tiles using exact (x, y) top-left coordinates
-      drawHalfCircleTile(marginX+ tileSize, gridTopY, tileSize);                       // Top-Left (40, 185)
+      drawHalfCircleTile(40, 185, 360);                       // Top-Left (40, 185)
       drawQuarterSectorsTile(marginX , gridTopY, tileSize);        // Top-Right (400, 185)
       drawThreeQuartersTile(marginX, gridTopY + tileSize, tileSize);         // Bottom-Left (40, 545)
       drawOpenArcsTile(marginX + tileSize, gridTopY + tileSize, tileSize);   // Bottom-Right (400, 545)
