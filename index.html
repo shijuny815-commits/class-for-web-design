@@ -19,9 +19,40 @@ function drawClock() {
   ctx.strokeStyle = 'white';
   ctx.stroke();
 }
-/*function drawface()
+function drawface()
 {
+   for(let num=1;num<61;num++)
+   {
+    if(num%5==0)
+    {
+      let ang = num * Math.PI / 6;
+      ctx.rotate(ang);
+      ctx.translate(0, -radius * 0.85);
+      ctx.rotate(-ang);
+      ctx.beginPath();
+      ctx.moveTo(radius*0.82, 0);
+      ctx.lineto(radius*0.78,0);
+      ctx.lineWidth=10;
+      ctx.stroke();
+      ctx.rotate(ang);
+      ctx.translate(0, radius * 0.85);
+      ctx.rotate(-ang);
 
-}*/
+      continue;
+    }
+    let ang = num * Math.PI / 6;
+      ctx.rotate(ang);
+      ctx.translate(0, -radius * 0.85);
+      ctx.rotate(-ang);
+      ctx.beginPath();
+      ctx.moveTo(radius*0.82, 0);
+      ctx.lineto(radius*0.8,0);
+      ctx.lineWidth=5;
+      ctx.stroke();
+      ctx.rotate(ang);
+      ctx.translate(0, radius * 0.85);
+      ctx.rotate(-ang);
+   }
+}
 </script>
 </body>
