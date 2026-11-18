@@ -11,39 +11,44 @@
     radius = radius * 0.90;
 
     drawClock();
-    drawFace();
+    drawface();
 
     function drawClock() {
       ctx.beginPath();
       ctx.arc(0, 0, radius, 0, 2 * Math.PI);
-      ctx.lineWidth = radius * 0.05; // Outer ring thickness (increase 0.05 to make it thicker)
-      ctx.strokeStyle = '#9A7B5E';   // Gold border
+      ctx.lineWidth = radius * 0.05;
+      ctx.strokeStyle = '#9A7B5E';
       ctx.stroke();
     }
 
-    function drawFace() {
-      for (let num = 1; num <= 60; num++) {
-        let ang = num * Math.PI / 30; // 60 ticks around 2π (360°)
-        ctx.save();
-        ctx.rotate(ang);
-        ctx.beginPath();
+    function drawface() {
+      for (let num = 1; num < 61; num++) {
+        let ang = num * Math.PI / 30; // Changed /6 to /30 for 60 ticks
 
-        if (num % 5 === 0) {
-          // Hour ticks (longer and thicker)
-          ctx.moveTo(0, -radius * 0.92);
-          ctx.lineTo(0, -radius * 0.80);
+        if (num % 5 == 0) {
+          ctx.rotate(ang);
+          ctx.translate(0, -radius * 0.85);
+          ctx.beginPath();
+          ctx.moveTo(0, -radius * 0.07); // Draw along Y-axis relative to translated point
+          ctx.lineTo(0, radius * 0.05);
           ctx.lineWidth = 10;
-          ctx.strokeStyle = '#AF8E73'; // Highlight gold
-        } else {
-          // Minute ticks (shorter and thinner)
-          ctx.moveTo(0, -radius * 0.92);
-          ctx.lineTo(0, -radius * 0.86);
-          ctx.lineWidth = 5;
-          ctx.strokeStyle = '#9A7B5E'; // Mid-tone gold
+          ctx.strokeStyle = '#AF8E73';
+          ctx.stroke();
+          ctx.translate(0, radius * 0.85); // Undo translate first
+          ctx.rotate(-ang);                // Undo rotate second
+          continue;
         }
 
+        ctx.rotate(ang);
+        ctx.translate(0, -radius * 0.85);
+        ctx.beginPath();
+        ctx.moveTo(0, -radius * 0.07);
+        ctx.lineTo(0, 0);
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = '#9A7B5E';
         ctx.stroke();
-        ctx.restore();
+        ctx.translate(0, radius * 0.85);
+        ctx.rotate(-ang);
       }
     }
   </script>
