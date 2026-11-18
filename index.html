@@ -12,7 +12,8 @@
 
     drawClock();
     drawface();
-
+    drawlinebetween(0.87);
+    drawlinebetween(0.75);
     function drawClock() {
       ctx.beginPath();
       ctx.arc(0, 0, radius, 0, 2 * Math.PI);
@@ -23,19 +24,19 @@
 
     function drawface() {
       for (let num = 1; num < 61; num++) {
-        let ang = num * Math.PI / 30; // Changed /6 to /30 for 60 ticks
+        let ang = num * Math.PI / 30; 
 
         if (num % 5 == 0) {
           ctx.rotate(ang);
           ctx.translate(0, -radius * 0.85);
           ctx.beginPath();
-          ctx.moveTo(0, -radius * 0.07); // Draw along Y-axis relative to translated point
+          ctx.moveTo(0, -radius * 0.07); 
           ctx.lineTo(0, radius * 0.05);
           ctx.lineWidth = 10;
           ctx.strokeStyle = '#AF8E73';
           ctx.stroke();
-          ctx.translate(0, radius * 0.85); // Undo translate first
-          ctx.rotate(-ang);                // Undo rotate second
+          ctx.translate(0, radius * 0.85); 
+          ctx.rotate(-ang);                
           continue;
         }
 
@@ -50,6 +51,14 @@
         ctx.translate(0, radius * 0.85);
         ctx.rotate(-ang);
       }
+    }
+    drawlinebetween(n)
+    {
+      ctx.beginPath();
+      ctx.arc(0, 0, radius*n, 0, 2 * Math.PI);
+      ctx.lineWidth = radius*n * 0.05;
+      ctx.strokeStyle = '#9A7B5E';
+      ctx.stroke();
     }
   </script>
 </body>
