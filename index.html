@@ -27,6 +27,13 @@
       height: auto;
       box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
     }
+    button {
+      display: block;
+      color: aquamarine;
+      width: 200px;
+      height: 100px;
+    }
+
   </style>
 </head>
 <body>
@@ -192,10 +199,10 @@
       ctx.fillStyle = COLORS.teal;
       ctx.textAlign = "left";
       // Draw the 4 tiles using exact (x, y) top-left coordinates
-      drawHalfCircleTile(40, 185, 360);                       // Top-Left (40, 185)
-      drawQuarterSectorsTile(marginX , gridTopY, tileSize);        // Top-Right (400, 185)
-      drawThreeQuartersTile(marginX, gridTopY + tileSize, tileSize);         // Bottom-Left (40, 545)
-      drawOpenArcsTile(marginX + tileSize, gridTopY + tileSize, tileSize);   // Bottom-Right (400, 545)
+      //drawHalfCircleTile(40, 185, 360);                       // Top-Left (40, 185)
+      //drawQuarterSectorsTile(marginX , gridTopY, tileSize);        // Top-Right (400, 185)
+      //drawThreeQuartersTile(marginX, gridTopY + tileSize, tileSize);         // Bottom-Left (40, 545)
+      //drawOpenArcsTile(marginX + tileSize, gridTopY + tileSize, tileSize);   // Bottom-Right (400, 545)
 
       // Footer Typography
       const footerTopY = gridTopY + tileSize * 2 + 58;
