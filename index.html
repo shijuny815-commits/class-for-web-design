@@ -8,6 +8,13 @@
     const canvas=document.getelementbyid("canvas");
     const ctx = canvas.getContext("2d");
     let redius=canvas.height/2;
-    
+    ctx.translate(redius,redius);
+    redius=redius*0.9;
+    function drawface()
+    {
+      ctx.arc(0,0,redius,0,Math.PI*2);
+      ctx.fillStyle="#FFD700";
+      ctx.fill();
+    }
   </script>
 </body>
