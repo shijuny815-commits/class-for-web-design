@@ -50,6 +50,12 @@
         ctx.stroke();
         ctx.translate(0, radius * 0.85);
         ctx.rotate(-ang);
+        ctx.font = "50px Arial";
+        if(num%15==0)
+        {
+          let word="IIV";
+          ctx.strokeText(word,10,80);
+        }
       }
     }
     function drawlinebetween(n)
