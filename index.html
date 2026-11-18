@@ -12,7 +12,7 @@
 
     drawClock();
     drawface();
-    drawlinebetween(0.87);
+    drawlinebetween(0.95);
     drawlinebetween(0.75);
     function drawClock() {
       ctx.beginPath();
@@ -56,7 +56,7 @@
     {
       ctx.beginPath();
       ctx.arc(0, 0, radius*n, 0, 2 * Math.PI);
-      ctx.lineWidth = radius*n * 0.05;
+      ctx.lineWidth = radius * 0.005;
       ctx.strokeStyle = '#9A7B5E';
       ctx.stroke();
     }
