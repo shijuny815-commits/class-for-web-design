@@ -34,14 +34,19 @@
       width: 200px;
       height: 100px;
     }
+    div.buttomlist{
+      display: flex;
+    }
 
   </style>
 </head>
 <body>
-  <button onclick="drawHalfCircleTile(40, 185, 360)">first</button>
-  <button onclick="drawQuarterSectorsTile(40, 185, 360)">2</button>
-  <button onclick="drawThreeQuartersTile(40, 185, 360)">3</button>
-  <button onclick="drawOpenArcsTile(40, 185, 360)">4</button>
+  <div class="buttomlist">
+    <button onclick="drawHalfCircleTile(40, 185, 360)">first</button>
+    <button onclick="drawQuarterSectorsTile(40, 185, 360)">2</button>
+    <button onclick="drawThreeQuartersTile(40, 185, 360)">3</button>
+    <button onclick="drawOpenArcsTile(40, 185, 360)">4</button>
+  </div>
   
   <canvas id="arcStudyCanvas" width="800" height="980"></canvas>
 
