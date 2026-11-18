@@ -5,17 +5,17 @@
 <body>
   <canvas id="canvas" width="400" height="400" style="background-color:#101E32"></canvas>
   <script>
-    const canvas=document.getElementbyId("canvas");
-    const ctx = canvas.getContext("2d");
-    let redius=canvas.height/2;
-    ctx.translate(redius,redius);
-    redius=redius*0.9;
-    drawface();
-    function drawface()
-    {
-      ctx.arc(0,0,redius,0,Math.PI*2);
-      ctx.fillStyle="white";
-      ctx.fill();
-    }
-  </script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+let radius = canvas.height / 2;
+ctx.translate(radius, radius);
+radius = radius * 0.90 
+drawClock();
+
+function drawClock() {
+  ctx.arc(0, 0, radius, 0 , 2*Math.PI);
+  ctx.fillStyle = "white";
+  ctx.fill();
+}
+</script>
 </body>
