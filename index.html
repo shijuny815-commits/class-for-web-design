@@ -13,8 +13,11 @@ radius = radius * 0.90
 drawClock();
 
 function drawClock() {
-  ctx.arc(0, 0, radius, 0 , 2*Math.PI);
-  ctx.fillStyle = "0xAF8E73";
+  ctx.arc(0, 0, radius, 0 , 2*Math.PI);s
+  ctx.fillStyle = "#AF8E73";
+  ctx.fill();
+  ctx.arc(0,0,radius*0.9,0,2*Math.PI);
+  ctx.fillStyle = "#101E32";
   ctx.fill();
 }
 function drawface()
