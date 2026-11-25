@@ -1,87 +1,654 @@
 <!DOCTYPE html>
 <html>
-<head></head>
-<body>
-  <canvas id="canvas" width="1000" height="1000" style="background-color:#101E32"></canvas>
-  <script>
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-    let radius = canvas.height / 2;
-    ctx.translate(radius, radius);
-    radius = radius * 0.90;
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+* {
+    box-sizing: border-box;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #1e1e24;
+    font-family: sans-serif;
+}
+.game-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+canvas {
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: #f1f1f1;
+}
+.controls-hint {
+    flex: 0 0 auto;
+    width: 100%;
+    padding: 10px 16px;
+    background-color: #26262e;
+    color: #f5f5f7;
+    font-size: 14px;
+    border-top: 1px solid #3c3c48;
+    text-align: center;
+    line-height: 1.4;
+}
+</style>
+</head>
+<body onload="startGame()">
+<div class="game-wrapper">
+    <div id="controlsBar" class="controls-hint">
+        <strong>Button Controls:</strong>
+        [Q] Jump Left &nbsp;|&nbsp; [Space] Jump &nbsp;|&nbsp; [E] Jump Right &nbsp;|&nbsp;
+        [A / ←] Move Left &nbsp;|&nbsp; [S / ↓] Stone (2× Speed) &nbsp;|&nbsp; [D / →] Move Right &nbsp;|&nbsp;
+        [Hold Shift] 3× Slower &nbsp;|&nbsp; [R] Restart
+    </div>
+</div>
 
-    drawClock();
-    drawface();
-    drawlinebetween(0.95);
-    drawlinebetween(0.75);
-    drawword();
-    function drawClock() {
-      ctx.beginPath();
-      ctx.arc(0, 0, radius, 0, 2 * Math.PI);
-      ctx.lineWidth = radius * 0.05;
-      ctx.strokeStyle = '#9A7B5E';
-      ctx.stroke();
+<script>
+
+var myGamePiece1;
+var shadowHunter;
+var skyIslands = [];
+var isSlowMo = false;
+var isGameOver = false;
+var startTime = 0;
+var elapsedTime = 0;
+var aiDecisionTimer = 0;
+
+// Everything 4x bigger than previous 0.2 scale (0.2 * 4 = 0.8)
+var SCALE = 0.8;
+var SHADOW_POWER = 0.5;
+
+function buildSkyIslands(w, h) {
+    var baseX = Math.max(80, Math.min(w - 420, (w - 300) * 0.5));
+    return [
+        // Lower tier
+        new platform(180 * SCALE, 25 * SCALE, "#4CAF50", Math.max(20, w * 0.08), h - 110),
+        new platform(200 * SCALE, 25 * SCALE, "#4CAF50", Math.max(40, w * 0.26), h - 135),
+        new platform(220 * SCALE, 25 * SCALE, "#4CAF50", Math.max(60, w * 0.48), h - 120),
+        new platform(180 * SCALE, 25 * SCALE, "#4CAF50", Math.max(80, w * 0.72), h - 135),
+
+        // Mid tier
+        new platform(200 * SCALE, 25 * SCALE, "#2196F3", Math.max(30, w * 0.15), h - 245),
+        new platform(240 * SCALE, 25 * SCALE, "#2196F3", Math.max(50, w * 0.37), h - 270),
+        new platform(220 * SCALE, 25 * SCALE, "#2196F3", Math.max(70, w * 0.61), h - 255),
+        new platform(180 * SCALE, 25 * SCALE, "#2196F3", Math.max(90, w * 0.81), h - 280),
+
+        // Upper tier
+        new platform(200 * SCALE, 25 * SCALE, "#FF9800", Math.max(40, w * 0.22), h - 395),
+        new platform(260 * SCALE, 25 * SCALE, "#FF9800", Math.max(60, w * 0.45), h - 425),
+        new platform(200 * SCALE, 25 * SCALE, "#FF9800", Math.max(80, w * 0.69), h - 405),
+
+        // Peak island
+        new platform(240 * SCALE, 25 * SCALE, "#9C27B0", baseX, Math.max(90, h - 545))
+    ];
+}
+
+function resizeCanvasToFullScreen() {
+    var wrapper = document.querySelector(".game-wrapper");
+    var bar = document.getElementById("controlsBar");
+    var availW = Math.max(300, window.innerWidth);
+    var availH = Math.max(200, window.innerHeight - (bar ? bar.offsetHeight : 0));
+
+    var prevW = myGameArea.canvas.width || availW;
+    var prevH = myGameArea.canvas.height || availH;
+
+    myGameArea.canvas.width = availW;
+    myGameArea.canvas.height = availH;
+
+    skyIslands = buildSkyIslands(availW, availH);
+
+    if (myGamePiece1) {
+        var ratioX = availW / prevW;
+        var ratioY = availH / prevH;
+        myGamePiece1.x = Math.min(availW - myGamePiece1.width, Math.max(0, myGamePiece1.x * ratioX));
+        myGamePiece1.y = Math.min(availH - myGamePiece1.height, Math.max(0, myGamePiece1.y * ratioY));
+        myGamePiece1.pushOut(skyIslands);
     }
 
-    function drawface() {
-      for (let num = 1; num < 61; num++) {
-        let ang = num * Math.PI / 30; 
+    if (shadowHunter) {
+        var sRatioX = availW / prevW;
+        var sRatioY = availH / prevH;
+        shadowHunter.x = Math.min(availW - shadowHunter.width, Math.max(0, shadowHunter.x * sRatioX));
+        shadowHunter.y = Math.min(availH - shadowHunter.height, Math.max(0, shadowHunter.y * sRatioY));
+        shadowHunter.pushOut(skyIslands);
+    }
 
-        if (num % 5 == 0) {
-          ctx.rotate(ang);
-          ctx.translate(0, -radius * 0.85);
-          ctx.beginPath();
-          ctx.moveTo(0, -radius * 0.07); 
-          ctx.lineTo(0, radius * 0.05);
-          ctx.lineWidth = 10;
-          ctx.strokeStyle = '#AF8E73';
-          ctx.stroke();
-          ctx.translate(0, radius * 0.85); 
-          ctx.rotate(-ang);                
-          continue;
+    if (wrapper && !myGameArea.canvas.parentNode) {
+        wrapper.insertBefore(myGameArea.canvas, bar || null);
+    }
+}
+
+function startGame() {
+    isSlowMo = false;
+    isGameOver = false;
+    startTime = Date.now();
+    elapsedTime = 0;
+    aiDecisionTimer = 0;
+
+    myGameArea.prepareCanvas();
+    resizeCanvasToFullScreen();
+
+    var w = myGameArea.canvas.width;
+    var h = myGameArea.canvas.height;
+    var slimeSize = 30 * SCALE;
+
+    // Player spawns on the right side near bottom (powerScale = 1)
+    myGamePiece1 = new component(
+        slimeSize, slimeSize, "red",
+        Math.max(40, w - slimeSize - 40), h - slimeSize,
+        1 * SCALE, 0.0001 * SCALE, 0.1 * SCALE,
+        1
+    );
+
+    // Shadow Hunter spawns in the bottom-left corner (powerScale = 1.5x player)
+    shadowHunter = new component(
+        slimeSize, slimeSize, "#1a1a2e",
+        4, h - slimeSize,
+        1 * SCALE, 0.0001 * SCALE, 0.1 * SCALE,
+        SHADOW_POWER
+    );
+
+    skyIslands = buildSkyIslands(w, h);
+
+    if (myGameArea.interval) clearInterval(myGameArea.interval);
+    myGameArea.start();
+}
+
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    prepareCanvas : function() {
+        var wrapper = document.querySelector(".game-wrapper");
+        var bar = document.getElementById("controlsBar");
+        this.context = this.canvas.getContext("2d");
+        if (!this.canvas.parentNode && wrapper) {
+            wrapper.insertBefore(this.canvas, bar || null);
+        }
+    },
+    start : function() {
+        this.prepareCanvas();
+        this.interval = setInterval(updateGameArea, 20);
+    },
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+}
+
+function platform(width, height, color, x, y) {
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;
+    this.update = function() {
+        var ctx = myGameArea.context;
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = "#795548";
+        ctx.fillRect(this.x + 2, this.y + this.height - 4, Math.max(2, this.width - 4), 4);
+    }
+}
+
+function component(width, height, color, x, y, gravity, newgravity_addbase, stop_costbase, powerScale) {
+    this.gravity = gravity;
+    this.baseWidth = width;
+    this.baseHeight = height;
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;
+    this.speedy = 0;   
+    this.speedx = 0;
+    this.powerScale = powerScale || 1;
+
+    // Max speed limits scaled with 4x SCALE and powerScale
+    this.maxSpeedX = 18 * SCALE * this.powerScale;
+    this.maxUpSpeedY = 24 * SCALE * this.powerScale;
+    this.maxDownSpeedY = 80 * SCALE * this.powerScale;
+
+    var newgravity = this.gravity;
+
+    this.clampSpeeds = function() {
+        if (this.speedx > this.maxSpeedX) {
+            this.speedx = this.maxSpeedX;
+        } else if (this.speedx < -this.maxSpeedX) {
+            this.speedx = -this.maxSpeedX;
         }
 
-        ctx.rotate(ang);
-        ctx.translate(0, -radius * 0.85);
-        ctx.beginPath();
-        ctx.moveTo(0, -radius * 0.07);
-        ctx.lineTo(0, 0);
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = '#9A7B5E';
-        ctx.stroke();
-        ctx.translate(0, radius * 0.85);
-        ctx.rotate(-ang);
-      }
+        if (this.speedy < -this.maxUpSpeedY) {
+            this.speedy = -this.maxUpSpeedY;
+        } else if (this.speedy > this.maxDownSpeedY) {
+            this.speedy = this.maxDownSpeedY;
+        }
+    };
+
+    this.update = function() {
+        var ctx = myGameArea.context;
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
-    function drawlinebetween(n)
-    {
-      ctx.beginPath();
-      ctx.arc(0, 0, radius*n, 0, 2 * Math.PI);
-      ctx.lineWidth = radius * 0.005;
-      ctx.strokeStyle = '#9A7B5E';
-      ctx.stroke();
+
+    this.overlaps = function(obj) {
+        return (
+            this.x < obj.x + obj.width &&
+            this.x + this.width > obj.x &&
+            this.y < obj.y + obj.height &&
+            this.y + this.height > obj.y
+        );
     }
-    function drawword()
-    {
-      ctx.font = `${radius * 0.15}px serif`; // Match the serif font style from your image
-      ctx.textBaseline = "middle";
-      ctx.textAlign = "center";
-      ctx.fillStyle = "#9A7B5E";
-      let romans=["IIV","VI","IX","XII"];
-      for (let i = 0; i < 4; i++) {
-        let ang = i * Math.PI*3 / 6;
-        
-        ctx.rotate(ang);
-        ctx.translate(0, -radius * 0.68); 
-        ctx.rotate(-ang); 
-        
-        ctx.fillText(romans[i], 0, 0);
-        
-        ctx.rotate(ang);
-        ctx.translate(0, radius * 0.68);
-        ctx.rotate(-ang);
-      }
+
+    this.pushOut = function(obstacles, preferAxis) {
+        var maxRight = myGameArea.canvas.width - this.width;
+        var maxBottom = myGameArea.canvas.height - this.height;
+
+        if (this.x < 0) this.x = 0;
+        if (this.x > maxRight) this.x = maxRight;
+        if (this.y < 0) this.y = 0;
+        if (this.y > maxBottom) this.y = maxBottom;
+
+        if (!obstacles) return;
+
+        for (var i = 0; i < obstacles.length; i++) {
+            var obs = obstacles[i];
+            if (!this.overlaps(obs)) continue;
+
+            var penLeft = (this.x + this.width) - obs.x;
+            var penRight = (obs.x + obs.width) - this.x;
+            var penTop = (this.y + this.height) - obs.y;
+            var penBottom = (obs.y + obs.height) - this.y;
+
+            var minX = Math.min(penLeft, penRight);
+            var minY = Math.min(penTop, penBottom);
+
+            var resolveX = (preferAxis === "x") || (preferAxis !== "y" && minX < minY);
+
+            if (resolveX) {
+                if (penLeft <= penRight) {
+                    this.x = obs.x - this.width;
+                    if (this.speedx > 0) this.speedx = 0;
+                } else {
+                    this.x = obs.x + obs.width;
+                    if (this.speedx < 0) this.speedx = 0;
+                }
+            } else {
+                if (penTop <= penBottom) {
+                    this.y = obs.y - this.height;
+                    if (this.speedy > 0) this.speedy = 0;
+                    newgravity = this.gravity;
+                } else {
+                    this.y = obs.y + obs.height;
+                    if (this.speedy < 0) this.speedy = 0;
+                }
+            }
+        }
+
+        maxRight = myGameArea.canvas.width - this.width;
+        maxBottom = myGameArea.canvas.height - this.height;
+        if (this.x < 0) this.x = 0;
+        if (this.x > maxRight) this.x = maxRight;
+        if (this.y < 0) this.y = 0;
+        if (this.y > maxBottom) this.y = maxBottom;
     }
-  </script>
+
+    this.isGrounded = function(obstacles) {
+        if (this.y + this.height >= myGameArea.canvas.height - 0.5) {
+            return true;
+        }
+        if (!obstacles) return false;
+
+        for (var i = 0; i < obstacles.length; i++) {
+            var obs = obstacles[i];
+            var onThisObs =
+                Math.abs((this.y + this.height) - obs.y) <= 1.5 &&
+                (this.x + this.width) > obs.x + 0.3 &&
+                this.x < (obs.x + obs.width) - 0.3;
+            if (onThisObs) return true;
+        }
+        return false;
+    }
+
+    // Skill methods scaled by 4x SCALE and powerScale (1.5x for Shadow Hunter)
+    this.jump = function() {
+        this.speedy -= 15 * SCALE * this.powerScale;
+        this.clampSpeeds();
+        this.pushOut(skyIslands);
+    };
+    this.moveLeft = function() {
+        this.speedx -= 10 * SCALE * this.powerScale;
+        this.clampSpeeds();
+        this.pushOut(skyIslands);
+    };
+    this.moveRight = function() {
+        this.speedx += 10 * SCALE * this.powerScale;
+        this.clampSpeeds();
+        this.pushOut(skyIslands);
+    };
+    this.jumpLeft = function() {
+        this.speedx -= 10 * SCALE * this.powerScale;
+        this.speedy -= 15 * SCALE * this.powerScale;
+        this.clampSpeeds();
+        this.pushOut(skyIslands);
+    };
+    this.jumpRight = function() {
+        this.speedx += 10 * SCALE * this.powerScale;
+        this.speedy -= 15 * SCALE * this.powerScale;
+        this.clampSpeeds();
+        this.pushOut(skyIslands);
+    };
+    // Double-speed Stone slam scaled by powerScale and capped at maxDownSpeedY
+    this.stone = function() {
+        this.speedx = 0;
+        this.speedy = 80 * SCALE * this.powerScale;
+        this.clampSpeeds();
+    };
+
+    this.newPos = function(timeScale) {
+        this.clampSpeeds();
+
+        var effectiveScale = timeScale * this.powerScale;
+        var obstacles = skyIslands;
+
+        // 1. Recover slime shape smoothly toward base dimensions
+        var oldH = this.height;
+        var recoverSpeed = 0.12 * effectiveScale;
+        this.width += (this.baseWidth - this.width) * recoverSpeed;
+        this.height += (this.baseHeight - this.height) * recoverSpeed;
+
+        if (Math.abs(this.baseWidth - this.width) < 0.1) this.width = this.baseWidth;
+        if (Math.abs(this.baseHeight - this.height) < 0.1) this.height = this.baseHeight;
+
+        if (this.isGrounded(obstacles)) {
+            this.y -= (this.height - oldH);
+        }
+        this.pushOut(obstacles);
+
+        // 2. Move horizontally and check X collisions
+        var prevX = this.x;
+        var stepX = this.speedx * effectiveScale;
+        this.x += stepX;
+
+        var maxRight = myGameArea.canvas.width - this.width;
+        if (this.x < 0) {
+            if (this.speedx < -2 * SCALE) {
+                this.width = this.baseWidth * 0.5;
+                this.height = this.baseHeight * 2;
+                maxRight = myGameArea.canvas.width - this.width;
+            }
+            this.x = 0;
+            if (this.speedx < 0) this.speedx = 0;
+        } else if (this.x > maxRight) {
+            if (this.speedx > 2 * SCALE) {
+                this.width = this.baseWidth * 0.5;
+                this.height = this.baseHeight * 2;
+            }
+            this.x = myGameArea.canvas.width - this.width;
+            if (this.speedx > 0) this.speedx = 0;
+        }
+
+        for (var i = 0; i < obstacles.length; i++) {
+            var obs = obstacles[i];
+            if (this.overlaps(obs)) {
+                var wasAboveOrBelow = (this.y + this.height <= obs.y + 3) || (this.y >= obs.y + obs.height - 3);
+                if (!wasAboveOrBelow && prevX + this.width <= obs.x + Math.max(6, Math.abs(stepX) + 2) && stepX > 0) {
+                    if (this.speedx > 2 * SCALE) {
+                        this.width = this.baseWidth * 0.5;
+                        this.height = this.baseHeight * 2;
+                    }
+                    this.x = obs.x - this.width;
+                    if (this.speedx > 0) this.speedx = 0;
+                } else if (!wasAboveOrBelow && prevX >= obs.x + obs.width - Math.max(6, Math.abs(stepX) + 2) && stepX < 0) {
+                    if (this.speedx < -2 * SCALE) {
+                        this.width = this.baseWidth * 0.5;
+                        this.height = this.baseHeight * 2;
+                    }
+                    this.x = obs.x + obs.width;
+                    if (this.speedx < 0) this.speedx = 0;
+                } else {
+                    this.pushOut(obstacles, "x");
+                }
+            }
+        }
+        this.pushOut(obstacles);
+
+        // 3. Apply gravity and move vertically
+        if (!this.isGrounded(obstacles)) {
+            newgravity = newgravity + (newgravity_addbase * effectiveScale);
+        } else {
+            newgravity = this.gravity;
+        }
+
+        var prevY = this.y;
+        var totalMoveY = (newgravity + this.speedy) * effectiveScale;
+        this.y += totalMoveY;
+
+        var maxBottom = myGameArea.canvas.height - this.height;
+        if (this.y < 0) {
+            if (this.speedy < -2 * SCALE) {
+                this.width = this.baseWidth * 1.5;
+                this.height = this.baseHeight * 0.5;
+            }
+            this.y = 0;
+            if (this.speedy < 0) this.speedy = 0;
+        } else if (this.y > maxBottom) {
+            if (this.speedy > 5 * SCALE) {
+                this.width = this.baseWidth * 1.6;
+                this.height = this.baseHeight * 0.5;
+            }
+            this.y = myGameArea.canvas.height - this.height;
+            if (this.speedy > 0) this.speedy = 0;
+            newgravity = this.gravity;
+        }
+
+        for (var j = 0; j < obstacles.length; j++) {
+            var obsY = obstacles[j];
+            if (this.overlaps(obsY)) {
+                if (totalMoveY > 0 && prevY + this.height <= obsY.y + Math.max(6, Math.abs(totalMoveY) + 2)) {
+                    if (this.speedy > 5 * SCALE) {
+                        this.width = this.baseWidth * 1.6;
+                        this.height = this.baseHeight * 0.5;
+                    }
+                    this.y = obsY.y - this.height;
+                    if (this.speedy > 0) this.speedy = 0;
+                    newgravity = this.gravity;
+                } else if (totalMoveY < 0 && prevY >= obsY.y + obsY.height - Math.max(6, Math.abs(totalMoveY) + 2)) {
+                    if (this.speedy < -2 * SCALE) {
+                        this.width = this.baseWidth * 1.5;
+                        this.height = this.baseHeight * 0.5;
+                    }
+                    this.y = obsY.y + obsY.height;
+                    if (this.speedy < 0) this.speedy = 0;
+                } else {
+                    this.pushOut(obstacles, "y");
+                }
+            }
+        }
+
+        // 4. Final containment guard
+        this.pushOut(obstacles);
+
+        // 5. Friction & vertical velocity decay
+        var friction = stop_costbase * effectiveScale;
+        if (Math.abs(this.speedx) <= friction) {
+            this.speedx = 0;
+        } else if (this.speedx > 0) {
+            this.speedx -= friction;
+        } else {
+            this.speedx += friction;
+        }
+
+        if (this.speedy != 0) {
+            this.speedy += (1 * SCALE) * effectiveScale;
+        }
+
+        this.clampSpeeds();
+    }
+}
+
+// AI Hunter uses all skills (Jump, JumpLeft, JumpRight, MoveLeft, MoveRight, 2x Stone) at 1.5x power
+function updateShadowHunterAI() {
+    aiDecisionTimer++;
+    if (aiDecisionTimer < 6) return;
+    aiDecisionTimer = 0;
+
+    var dx = (myGamePiece1.x + myGamePiece1.width / 2) - (shadowHunter.x + shadowHunter.width / 2);
+    var dy = (myGamePiece1.y + myGamePiece1.height / 2) - (shadowHunter.y + shadowHunter.height / 2);
+    var grounded = shadowHunter.isGrounded(skyIslands);
+
+    // 1. DOUBLE-SPEED STONE SLAM at 1.5x power
+    if (!grounded && dy > 45 * SCALE && Math.abs(dx) < 35 * SCALE && shadowHunter.speedy < 40 * SCALE * shadowHunter.powerScale) {
+        shadowHunter.stone();
+        return;
+    }
+
+    // 2. JUMP / JUMP-LEFT / JUMP-RIGHT
+    var blockedHorizontally = false;
+    for (var i = 0; i < skyIslands.length; i++) {
+        var isl = skyIslands[i];
+        var sameRow = (shadowHunter.y + shadowHunter.height > isl.y) && (shadowHunter.y < isl.y + isl.height);
+        if (sameRow && Math.abs((isl.x + isl.width / 2) - shadowHunter.x) < 120 * SCALE) {
+            blockedHorizontally = true;
+            break;
+        }
+    }
+
+    if ((dy < -18 * SCALE || blockedHorizontally) && (grounded || shadowHunter.speedy > -2 * SCALE)) {
+        if (dx < -15 * SCALE) {
+            shadowHunter.jumpLeft();
+        } else if (dx > 15 * SCALE) {
+            shadowHunter.jumpRight();
+        } else {
+            shadowHunter.jump();
+        }
+        return;
+    }
+
+    // 3. MOVE LEFT / MOVE RIGHT
+    if (dx < -8 * SCALE) {
+        shadowHunter.moveLeft();
+    } else if (dx > 8 * SCALE) {
+        shadowHunter.moveRight();
+    }
+}
+
+function drawHUD() {
+    var ctx = myGameArea.context;
+    ctx.font = "bold 16px sans-serif";
+    ctx.fillStyle = "#222";
+    ctx.fillText("Survival Time: " + elapsedTime.toFixed(2) + "s", 16, 28);
+
+    ctx.font = "14px sans-serif";
+    if (isSlowMo) {
+        ctx.fillStyle = "#1565C0";
+        ctx.fillText("SPEED: 3x SLOWER (Shift) | MaxX: " + myGamePiece1.maxSpeedX.toFixed(1) + " | MaxY: " + myGamePiece1.maxUpSpeedY.toFixed(1) + "/" + myGamePiece1.maxDownSpeedY.toFixed(1), 16, 50);
+    } else {
+        ctx.fillStyle = "#555";
+        ctx.fillText("SPEED: 1x Normal (Hold Shift for 3x Slow) | Scale: 4x | Shadow Power: 1.5x", 16, 50);
+    }
+
+    if (isGameOver) {
+        var w = myGameArea.canvas.width;
+        var h = myGameArea.canvas.height;
+
+        ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.fillStyle = "#FF5252";
+        ctx.font = "bold 40px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("GAME OVER — CAUGHT BY SHADOW!", w / 2, h * 0.42);
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "bold 22px sans-serif";
+        ctx.fillText("You survived: " + elapsedTime.toFixed(2) + " seconds", w / 2, h * 0.42 + 42);
+
+        ctx.font = "16px sans-serif";
+        ctx.fillStyle = "#DDD";
+        ctx.fillText("Press [R] to Play Again", w / 2, h * 0.42 + 78);
+        ctx.textAlign = "left";
+    }
+}
+
+function updateGameArea() {
+    if (isGameOver) return;
+
+    elapsedTime = (Date.now() - startTime) / 1000;
+    var playerTimeScale = isSlowMo ? (1 / 3) : 1;
+
+    myGameArea.clear();
+
+    // 1. Draw sky islands
+    for (var i = 0; i < skyIslands.length; i++) {
+        skyIslands[i].update();
+    }
+
+    // 2. Update Player (affected by Shift 3x slow-mo)
+    myGamePiece1.newPos(playerTimeScale);
+
+    // 3. Update Shadow Hunter AI & Physics (1.5x power)
+    updateShadowHunterAI();
+    shadowHunter.newPos(1);
+
+    // 4. Render Player and Shadow Hunter
+    myGamePiece1.update();
+    shadowHunter.update();
+
+    // 5. Check if Shadow Hunter touched Player -> Game Over
+    if (myGamePiece1.overlaps(shadowHunter)) {
+        isGameOver = true;
+    }
+
+    // 6. Draw Timer, Speed Status & Game Over overlay
+    drawHUD();
+}
+
+window.addEventListener("resize", resizeCanvasToFullScreen);
+
+// Keyboard controls
+document.addEventListener("keydown", function(event) {
+    var key = event.key.toLowerCase();
+
+    if (key === "r" && isGameOver) {
+        startGame();
+        return;
+    }
+
+    if (event.key === "Shift") {
+        isSlowMo = true;
+        return;
+    }
+
+    if (isGameOver || event.repeat) return;
+
+    if (key === "q") {
+        myGamePiece1.jumpLeft();
+    } else if (event.code === "Space" || key === " ") {
+        event.preventDefault();
+        myGamePiece1.jump();
+    } else if (key === "e") {
+        myGamePiece1.jumpRight();
+    } else if (key === "a" || event.key === "ArrowLeft") {
+        event.preventDefault();
+        myGamePiece1.moveLeft();
+    } else if (key === "d" || event.key === "ArrowRight") {
+        event.preventDefault();
+        myGamePiece1.moveRight();
+    } else if (key === "s" || event.key === "ArrowDown") {
+        event.preventDefault();
+        myGamePiece1.stone();
+    }
+});
+
+document.addEventListener("keyup", function(event) {
+    if (event.key === "Shift") {
+        isSlowMo = false;
+    }
+});
+</script>
 </body>
 </html>
